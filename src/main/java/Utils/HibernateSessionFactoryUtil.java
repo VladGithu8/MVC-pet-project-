@@ -1,19 +1,17 @@
 package Utils;
 
-import Models.*;
+import Models.Customer;
+import Models.OrderCart;
+import Models.Product;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-
 public class HibernateSessionFactoryUtil {
 
     private static SessionFactory sessionFactory;
-
-
-
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -30,32 +28,7 @@ public class HibernateSessionFactoryUtil {
                 return sessionFactory;
             } catch (Exception e) {
                 System.out.println("Get EXCEPTION" + e);
-
             }
-
-        }
-            return sessionFactory;
+        } return sessionFactory;
     }
-
 }
-
-
-
-//    private static SessionFactory sessionFactory = createSessionFactory();
-//
-//    private static SessionFactory createSessionFactory() {
-//        if (sessionFactory == null) {
-//            StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-//            Metadata metaData = new MetadataSources(standardRegistry).getMetadataBuilder().build();
-//            sessionFactory = metaData.getSessionFactoryBuilder().build();
-//        }
-//        return sessionFactory;
-//    }
-
-//    public static SessionFactory getSessionFactory() {
-//        return sessionFactory;
-//    }
-//
-//    public static void shutdown() {
-//        sessionFactory.getCurrentSession().close();
-
