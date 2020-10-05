@@ -8,10 +8,7 @@ import java.util.List;
 
 public class CustomerService {
 
-
     private CustomerDAO customerDAO = new CustomerDAO();
-
-
 
     public Customer findCustomer(int id) throws Exception {
         return customerDAO.findById(id);
@@ -27,6 +24,5 @@ public class CustomerService {
     }
     public List<Customer> findAllCustomers() throws Exception{
         return customerDAO.findAllCustomers();
-
     }
 }

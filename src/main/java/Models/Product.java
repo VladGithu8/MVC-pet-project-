@@ -7,21 +7,19 @@ import java.util.List;
 @Entity
 @Table(name ="Product")
 public class Product implements Serializable {
-    public Product() {
-    }
+   
+ public Product() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-
     @ManyToMany
     @JoinTable(name = "Product_OrderCart",
             joinColumns = @JoinColumn(name = "Product_id"),
             inverseJoinColumns = @JoinColumn(name = "OrderCart_id"))
     private List<OrderCart> orderCart;
-
 
     @Column(name = "product_name")
     private String productName;
@@ -32,12 +30,10 @@ public class Product implements Serializable {
     @Column(name = "price")
     private double price;
 
-
     public Product(String productName, String description, double price) {
         this.description = description;
         this.price = price;
         this.productName = productName;
-
     }
 
     public int getId() {

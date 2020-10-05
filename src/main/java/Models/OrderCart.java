@@ -32,8 +32,6 @@ public class OrderCart {
     public OrderCart(int id) {
         this.id = id;
         productList = new LinkedList<Product>();
-
-
     }
 
       public int getId() {

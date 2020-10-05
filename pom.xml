@@ -7,6 +7,7 @@
     <groupId>MVC.project</groupId>
     <artifactId>MVC.pet</artifactId>
     <version>0.7-SNAPSHOT</version>
+
     <build>
         <plugins>
             <plugin>

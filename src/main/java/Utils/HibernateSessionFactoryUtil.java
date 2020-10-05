@@ -26,9 +26,9 @@ public class HibernateSessionFactoryUtil {
                 SessionFactory sessionFactory = configuration.buildSessionFactory(build);
                 System.out.println(sessionFactory);
                 return sessionFactory;
-            } catch (Exception e) {
-                System.out.println("Get EXCEPTION" + e);
-            }
-        } return sessionFactory;
+
+            } catch (Exception e){ System.out.println("Get EXCEPTION" + e); }
+        } 
+       return sessionFactory;
     }
 }

@@ -10,9 +10,10 @@ import java.util.List;
 
 public class ProductDAO {
 
+public ProductDAO() {}
+
     public Product findById(int id) throws Exception {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Product.class, id);
-
     }
 
     public void saveProduct(Product product) throws Exception {
@@ -29,7 +30,6 @@ public class ProductDAO {
         session.update(product);
         t1.commit();
         session.close();
-
     }
 
     public void deleteProduct(Product product) throws Exception {
@@ -45,7 +45,7 @@ public class ProductDAO {
     }
 
     public List<Product> findAllProducts() throws Exception {
-        List<Product> products = (List<Product>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("FROM Products").list();
+        List<Product> products = (List<Product>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("SELECT * FROM Products").list();
         return products;
     }
 }

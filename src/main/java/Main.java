@@ -42,8 +42,5 @@ public class Main {
         orderCart2.addProduct(mi2);
         orderCart2.setCustomerID(customer2);
         System.out.println(orderCart2);
-
     }
-
-
 }

@@ -10,9 +10,7 @@ import java.util.List;
 
 public class CustomerDAO {
 
-    public CustomerDAO() {
-
-    }
+    public CustomerDAO() {}
 
     public Customer findById(int id) throws Exception {
         return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Customer.class, id);
@@ -42,7 +40,6 @@ public class CustomerDAO {
         session.update(cust);
         t1.commit();
         session.close();
-
     }
 
     public void deleteCustomer(Customer cust) throws Exception {

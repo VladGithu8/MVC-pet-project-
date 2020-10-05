@@ -13,8 +13,6 @@ public class ProductService {
     public void saveProduct (Product product) throws IOException {
         try {
             productDAO.saveProduct(product);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e){ e.printStackTrace(); }
     }
 }
