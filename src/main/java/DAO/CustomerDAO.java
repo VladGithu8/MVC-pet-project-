@@ -21,16 +21,18 @@ public class CustomerDAO {
 
     public void saveCustomer(Customer cust) {
         Session session = null;
-        try {
-            SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
-            session  = sessionFactory.openSession();
+        try (SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory()) {
+
+            session = sessionFactory.openSession();
             System.out.println(session);
             Transaction t1 = session.beginTransaction();
             session.save(cust);
             t1.commit();
-            session.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        finally {
+            session.close();
         }
     }
 
@@ -52,7 +54,7 @@ public class CustomerDAO {
     }
 
     public List<Customer> findAllCustomers() throws Exception {
-        List<Customer> cust = (List<Customer>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("FROM Customer").list();
+        List<Customer> cust = (List<Customer>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("SELECT * FROM Customer").list();
         return cust;
     }
 }
