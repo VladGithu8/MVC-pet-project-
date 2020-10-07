@@ -1,15 +1,14 @@
 package Models;
 
-import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name="Customer")
 public class Customer {
-   
-public Customer() {}
+
+    public Customer() {}
 
     @OneToMany(targetEntity = OrderCart.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderCart> orderCartList;
@@ -34,68 +33,42 @@ public Customer() {}
     @Column(name="e_mail")
     private String email;
 
-
     public Customer(String firstName, String lastName, int age, String phone, String email){
         this.age = age;
         this.firstName = firstName;
         this.email = email;
         this.lastName = lastName;
         this.phone = phone;
-        orderCartList = new ArrayList<OrderCart>();
-
+        orderCartList = new LinkedList<OrderCart>();
     }
-    public void addOrder(OrderCart orderCart){
-        orderCart.setCustomerID(this);
-        orderCartList.add(orderCart);
-    }
-
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id;}
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getFirstName() {return firstName;}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    public void setFirstName(String firstName) {this.firstName = firstName;}
 
-    public String getLastName() {
-        return lastName;
-    }
+    public String getLastName() {return lastName;}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public void setLastName(String lastName) {this.lastName = lastName;}
 
-    public int getAge() {
-        return age;
-    }
+    public int getAge() {return age;}
 
-    public void setAge(int age){
+    public void setAge(int age)
+    {
         this.age = age;
     }
 
-    public String getPhone() {
-        return phone;
-    }
+    public String getPhone() {return phone;}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    public void setPhone(String phone) {this.phone = phone;}
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() {return email;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setEmail(String email) {this.email = email;}
 
     @Override
     public String toString(){
@@ -105,6 +78,6 @@ public Customer() {}
                 "lastName = "+lastName+
                 "age = "+age+
                 "phone = "+phone+
-                "email="+email+'}';  }
-
+                "email="+email+'}';
+    }
 }

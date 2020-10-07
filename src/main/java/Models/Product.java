@@ -7,8 +7,8 @@ import java.util.List;
 @Entity
 @Table(name ="Product")
 public class Product implements Serializable {
-   
- public Product() {}
+
+    public Product() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,6 @@ public class Product implements Serializable {
         this.price = price;
         this.productName = productName;
     }
-
     public int getId() {
         return id;
     }

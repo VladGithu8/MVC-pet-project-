@@ -2,17 +2,23 @@ import Models.Customer;
 import Models.OrderCart;
 import Models.Product;
 
-import Services.*;
+import Services.CustomerService;
+import Services.ProductService;
+import Services.OrderCartService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
 
         CustomerService customerService = new CustomerService();
         ProductService productService = new ProductService();
+        OrderCartService orderCartService = new OrderCartService();
 
-        OrderCart orderCart = new OrderCart();
-        OrderCart orderCart1 = new OrderCart();
-        OrderCart orderCart2 = new OrderCart();
+        List<Product> products = new ArrayList<>();
+        List<Product> products1 = new ArrayList<>();
+        List<Product> products2 = new ArrayList<>();
 
         Customer customer = new Customer("Evgen","Borovoi",25,"0932223344","BorEv@gmail.com");
         Customer customer1 = new Customer("Semen","Korobkin",34,"0603335566","SemenKorobkin@gmail.com");
@@ -28,19 +34,7 @@ public class Main {
         productService.saveProduct(mi1);
         productService.saveProduct(mi2);
 
-        orderCart.addProduct(mi);
-        orderCart.setCustomerID(customer);
-        System.out.println(orderCart);
-
-        orderCart1.addProduct(mi);
-        orderCart1.addProduct(mi1);
-        orderCart1.addProduct(mi2);
-        orderCart1.setCustomerID(customer1);
-        System.out.println(orderCart1);
-
-        orderCart2.addProduct(mi1);
-        orderCart2.addProduct(mi2);
-        orderCart2.setCustomerID(customer2);
-        System.out.println(orderCart2);
+        System.out.println(productService.findAllProducts());
+        System.out.println(customerService.findAllCustomers());
     }
 }

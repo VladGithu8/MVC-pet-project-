@@ -1,52 +1,60 @@
 package DAO;
 
 import Models.Product;
-import Models.OrderCart;
-import Utils.HibernateSessionFactoryUtil;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
+import Utils.HibernateSessionFactoryUtil;
+import Utils.SessionUtilDAO;
+
+import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProductDAO {
 
-public ProductDAO() {}
+    private SessionUtilDAO sessionUtilDAO;
+    public ProductDAO() {sessionUtilDAO = new SessionUtilDAO();}
 
     public Product findById(int id) throws Exception {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Product.class, id);
-    }
+       return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Product.class, id);}
 
-    public void saveProduct(Product product) throws Exception {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction t1 = session.beginTransaction();
-        session.save(product);
-        t1.commit();
-        session.close();
-    }
+    public boolean saveProduct(Product product) {
+        sessionUtilDAO.save(product);
+        System.out.println("Product saved :" + product);
+        return true;}
 
-    public void updateProduct(Product product) throws Exception {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction t1 = session.beginTransaction();
-        session.update(product);
-        t1.commit();
-        session.close();
-    }
+    public boolean updateProduct(Product product) throws Exception {
+        sessionUtilDAO.update(product);
+        System.out.println("Product updated :" + product);
+        return true;}
 
-    public void deleteProduct(Product product) throws Exception {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Transaction t1 = session.beginTransaction();
-        session.delete(product);
-        t1.commit();
-        session.close();
-    }
+    public boolean deleteProduct(Product product) throws Exception {
+       sessionUtilDAO.delete(product);
+        System.out.println("Product deleted :" + product);
+        return true;}
 
-    public OrderCart findCartById(int id) throws Exception {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(OrderCart.class, id);
-    }
-
-    public List<Product> findAllProducts() throws Exception {
-        List<Product> products = (List<Product>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("SELECT * FROM Products").list();
-        return products;
+    public LinkedList<String> findAllProducts() throws IOException {
+        List<String> sqlProducts = new LinkedList<>();
+        List<Product> products = (List<Product>) HibernateSessionFactoryUtil
+                .getSessionFactory()
+                .openSession()
+                .createQuery("FROM Product")
+                .list();
+        while (sqlProducts.size() != products.size()){
+        for (Product p:products) {
+            int pId = Integer.valueOf(p.getId());
+            String pDescription = String.valueOf(p.getDescription());
+            double pPrice = Double.valueOf(p.getPrice());
+            String pProductName = String.valueOf(p.getProductName());
+            String pS = "\nId: " + pId + ", Product name: " + pProductName +
+                    ", Product price: " + pPrice +
+                    ", Description: " + pDescription;
+            sqlProducts.add(pS);
+        }
+        } return (LinkedList<String>) sqlProducts;
     }
 }
+
+
+
+
 

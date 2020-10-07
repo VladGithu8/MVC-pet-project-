@@ -1,8 +1,7 @@
 package Models;
 
-import Models.*;
 import javax.persistence.*;
-import java.util.*;
+import java.util.List;
 
 @Entity
 @Table(name ="OrderCart")
@@ -25,16 +24,11 @@ public class OrderCart {
             inverseJoinColumns = @JoinColumn(name= "Product_id"))
     private List<Product> productList;
 
-    public void addProduct(Product product){
-       productList.add(product);
+    public OrderCart(Customer customerID,List<Product> productList) {
+        this.productList = productList;
+        this.customerID = customerID;
     }
-
-    public OrderCart(int id) {
-        this.id = id;
-        productList = new LinkedList<Product>();
-    }
-
-      public int getId() {
+    public int getId() {
         return id;
     }
 
@@ -51,12 +45,10 @@ public class OrderCart {
     }
 
     public List<Product> getProductList() {
-        return productList;
-    }
+        return productList;}
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
-    }
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;}
 }
 
 
