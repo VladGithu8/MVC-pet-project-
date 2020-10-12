@@ -1,6 +1,16 @@
 package Models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+import javax.persistence.GenerationType;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -35,45 +45,35 @@ public class Product implements Serializable {
         this.price = price;
         this.productName = productName;
     }
+
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public List<OrderCart> getOrderCart() {
         return orderCart;
     }
-
     public void setOrderCart(List<OrderCart> orderCart) {
         this.orderCart = orderCart;
     }
-
     public String getProductName() {
         return productName;
     }
-
     public void setProductName(String productName) {
         this.productName = productName;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public double getPrice() {
         return price;
     }
-
     public void setPrice(double price) {
         this.price = price;
     }
 }
-
-

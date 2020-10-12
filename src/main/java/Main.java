@@ -35,6 +35,9 @@ public class Main {
         productService.saveProduct(mi2);
 
         System.out.println(productService.findAllProducts());
+        System.out.println(productService.findAllProductsToString());
+
         System.out.println(customerService.findAllCustomers());
+        System.out.println(customerService.findAllCustomersToString());
     }
 }

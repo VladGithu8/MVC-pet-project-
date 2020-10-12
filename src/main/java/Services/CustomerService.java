@@ -2,30 +2,39 @@ package Services;
 
 import DAO.CustomerDAO;
 import Models.Customer;
+
+import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class CustomerService {
 
     private CustomerDAO customerDAO;
-    public CustomerService() {customerDAO= new CustomerDAO();}
 
-    public boolean findCustomer(int id) throws Exception {
-        customerDAO.findById(id);
-        System.out.println(id);
-        return true;}
+    public CustomerService() {
+        customerDAO = new CustomerDAO();
+    }
 
-    public boolean saveCustomer(Customer customer) throws Exception {
-        customerDAO.saveCustomer(customer);
-        return true;}
+    public Customer findCustomerById(int id) throws SQLException, NoSuchElementException {
+        return customerDAO.findById(id);
+    }
 
-    public boolean deleteCustomer(Customer customer) throws Exception {
-        customerDAO.deleteCustomer(customer);
-        return true;}
+    public Customer saveCustomer(Customer customer) throws SQLException {
+        return customerDAO.save(customer);
+    }
 
-    public boolean updateCustomer(Customer customer) throws Exception {
-        customerDAO.updateCustomer(customer);
-        return true;}
+    public Customer deleteCustomer(Customer customer) throws SQLException, NoSuchElementException {
+        return customerDAO.delete(customer);
+    }
 
-    public List<String> findAllCustomers() throws Exception{
-        return customerDAO.findAllCustomers();}
+    public Customer updateCustomer(Customer customer) throws SQLException,NoSuchElementException {
+        return customerDAO.update(customer);
+    }
+
+    public List findAllCustomers() throws SQLException {
+        return customerDAO.findAll();
+    }
+    public List<String> findAllCustomersToString() throws SQLException {
+        return customerDAO.findAllCustomersToString();
+    }
 }

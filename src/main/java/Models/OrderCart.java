@@ -1,6 +1,18 @@
 package Models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
+import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
+
 import java.util.List;
 
 @Entity
@@ -28,28 +40,23 @@ public class OrderCart {
         this.productList = productList;
         this.customerID = customerID;
     }
+
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public Customer getCustomerID() {
         return customerID;
     }
-
     public void setCustomerID(Customer customerID) {
         this.customerID = customerID;
     }
-
     public List<Product> getProductList() {
-        return productList;}
-
+        return productList;
+    }
     public void setProductList(List<Product> productList) {
-        this.productList = productList;}
+        this.productList = productList;
+    }
 }
-
-
-

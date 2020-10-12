@@ -1,60 +1,62 @@
 package DAO;
 
 import Models.Product;
-
 import Utils.HibernateSessionFactoryUtil;
-import Utils.SessionUtilDAO;
+import org.hibernate.SessionException;
 
-import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public class ProductDAO {
+public class ProductDAO extends DAOImpl {
 
-    private SessionUtilDAO sessionUtilDAO;
-    public ProductDAO() {sessionUtilDAO = new SessionUtilDAO();}
+    @Override
+    public Product findById(int id) throws SessionException {
+        return (Product) findById(id);
+    }
 
-    public Product findById(int id) throws Exception {
-       return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Product.class, id);}
+    @Override
+    public Product save(Object product) throws SessionException {
+        return (Product) super.save(product);
+    }
 
-    public boolean saveProduct(Product product) {
-        sessionUtilDAO.save(product);
-        System.out.println("Product saved :" + product);
-        return true;}
+    @Override
+    public Product delete(Object product) throws NoSuchElementException, SessionException {
+        return (Product) super.delete(product);
+    }
 
-    public boolean updateProduct(Product product) throws Exception {
-        sessionUtilDAO.update(product);
-        System.out.println("Product updated :" + product);
-        return true;}
+    @Override
+    public Product update(Object product) throws NoSuchElementException, SessionException {
+        return (Product) super.update(product);
+    }
 
-    public boolean deleteProduct(Product product) throws Exception {
-       sessionUtilDAO.delete(product);
-        System.out.println("Product deleted :" + product);
-        return true;}
+    @Override
+    public List findAll() throws SessionException, SQLException, OutOfMemoryError {
+        List<Product> products = (List<Product>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From Customer").list();
+        return new ArrayList<>(products);
+    }
 
-    public LinkedList<String> findAllProducts() throws IOException {
+    public LinkedList<String> findAllProductsToString() throws OutOfMemoryError, SQLException {
         List<String> sqlProducts = new LinkedList<>();
         List<Product> products = (List<Product>) HibernateSessionFactoryUtil
                 .getSessionFactory()
                 .openSession()
                 .createQuery("FROM Product")
                 .list();
-        while (sqlProducts.size() != products.size()){
-        for (Product p:products) {
-            int pId = Integer.valueOf(p.getId());
-            String pDescription = String.valueOf(p.getDescription());
-            double pPrice = Double.valueOf(p.getPrice());
-            String pProductName = String.valueOf(p.getProductName());
-            String pS = "\nId: " + pId + ", Product name: " + pProductName +
-                    ", Product price: " + pPrice +
-                    ", Description: " + pDescription;
-            sqlProducts.add(pS);
+        while (sqlProducts.size() != products.size()) {
+            for (Product p : products) {
+                int pId = Integer.valueOf(p.getId());
+                String pDescription = String.valueOf(p.getDescription());
+                double pPrice = Double.valueOf(p.getPrice());
+                String pProductName = String.valueOf(p.getProductName());
+                String pS = "\nId: " + pId + ", Product name: " + pProductName +
+                        ", Product price: " + pPrice +
+                        ", Description: " + pDescription;
+                sqlProducts.add(pS);
+            }
         }
-        } return (LinkedList<String>) sqlProducts;
+        return (LinkedList<String>) sqlProducts;
     }
 }
-
-
-
-
-

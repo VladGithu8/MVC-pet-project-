@@ -1,26 +1,40 @@
 package DAO;
 
 import Models.OrderCart;
+
 import Utils.HibernateSessionFactoryUtil;
-import Utils.SessionUtilDAO;
+import org.hibernate.SessionException;
 
-public class OrderCartDAO {
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-    private SessionUtilDAO sessionUtilDAO;
-    public OrderCartDAO() {sessionUtilDAO = new SessionUtilDAO();}
+public class OrderCartDAO extends DAOImpl {
 
-    public OrderCart findById(int id) throws Exception{
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(OrderCart.class, id);}
+    @Override
+    public OrderCart findById(int id) throws SessionException {
+        return (OrderCart) findById(id);
+    }
 
-    public boolean saveOrderCart(OrderCart orderCart){
-        sessionUtilDAO.save(orderCart);
-        return true;}
+    @Override
+    public OrderCart save(Object orderCart) throws SessionException {
+        return (OrderCart) super.save(orderCart);
+    }
 
-    public boolean updateOrderCart(OrderCart orderCart){
-        sessionUtilDAO.update(orderCart);
-        return true;}
+    @Override
+    public OrderCart delete(Object orderCart) throws NoSuchElementException, SessionException {
+        return (OrderCart) super.delete(orderCart);
+    }
 
-    public boolean deleteOrderCart(OrderCart orderCart){
-        sessionUtilDAO.delete(orderCart);
-        return true;}
+    @Override
+    public OrderCart update(Object orderCart) throws NoSuchElementException, SessionException {
+        return (OrderCart) super.update(orderCart);
+    }
+
+    @Override
+    public List findAll() throws SessionException, SQLException, OutOfMemoryError {
+        List<OrderCart> orderCarts = (List<OrderCart>) HibernateSessionFactoryUtil.getSessionFactory().openSession().createQuery("From OrderCart").list();
+        return new ArrayList<>(orderCarts);
+    }
 }

@@ -2,31 +2,40 @@ package Services;
 
 import DAO.ProductDAO;
 import Models.Product;
-import java.io.IOException;
+
+import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProductService {
 
-   private ProductDAO productDAO;
-   public ProductService() {productDAO = new ProductDAO();}
+    private ProductDAO productDAO;
 
-    public boolean saveProduct(Product product) throws IOException {
-        productDAO.saveProduct(product);
-        return true;}
+    public ProductService() {
+        productDAO = new ProductDAO();
+    }
 
-    public List<String> findAllProducts() throws Exception {
-        return (List<String>) productDAO.findAllProducts();}
+    public Product findProductById(int id) throws SQLException, NoSuchElementException {
+        return productDAO.findById(id);
+    }
 
-    public boolean findProduct(int id) throws Exception {
-        productDAO.findById(id);
-        System.out.println(id);
-        return true;}
+    public Product saveProduct(Product product) throws SQLException{
+        return productDAO.save(product);
+    }
 
-    public boolean deleteProduct(Product product) throws Exception {
-        productDAO.deleteProduct(product);
-        return true;}
+    public Product deleteProduct(Product product) throws SQLException, NoSuchElementException {
+        return productDAO.delete(product);
+    }
 
-    public boolean updateProduct(Product product) throws Exception {
-        productDAO.updateProduct(product);
-        return true;}
+    public Product updateProduct(Product product) throws SQLException,NoSuchElementException {
+        return productDAO.update(product);
+    }
+
+    public List findAllProducts() throws SQLException {
+        return productDAO.findAll();
+    }
+
+    public List<String> findAllProductsToString() throws SQLException {
+        return productDAO.findAllProductsToString();
+    }
 }
