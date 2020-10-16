@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 
@@ -23,7 +24,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     ///todo:imp
     @Override
-    public T findById(int id) throws SQLException {
+    public Optional<T> findById(int id) throws SQLException {
         return null;
     }
 
@@ -31,25 +32,26 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return getCurrentSession().createQuery("from " + clazz.getName()).list();
     }
 
-    public T save(T entity) throws SQLException {
+    public Optional<T> save(T entity) {
         try (Session session = sessionFactory.openSession()) {
             System.out.println(session);
             Transaction t1 = session.beginTransaction();
             session.save(entity);
             t1.commit();
+            return Optional.of(entity);
         } catch (Exception e) {
             e.printStackTrace();
+            return Optional.of(entity);
         }
-        return entity;
     }
 
-    public T update(T entity) {
-        return (T) getCurrentSession().merge(entity);
+    public Optional<T> update(T entity) {
+        return (Optional<T>) getCurrentSession().merge(entity);
     }
 
-    public T delete(T entity) {
+    public Optional<T> delete(T entity) {
         getCurrentSession().delete(entity);
-        return entity;
+        return Optional.of(entity);
     }
 
 

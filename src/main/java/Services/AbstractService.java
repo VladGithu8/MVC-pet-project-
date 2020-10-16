@@ -4,6 +4,8 @@ import DAO.AbstractDao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public abstract class AbstractService<K,T extends AbstractDao<K>> implements Service<K> {
 
@@ -15,13 +17,10 @@ public abstract class AbstractService<K,T extends AbstractDao<K>> implements Ser
 
     @Override
     public K save(K t) {
-        try {
-            return entity.save(t);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            ///todo: consider to add Option e.g. Java 8
-            return null;
-        }
+            return entity
+                    .save(t)
+                    .orElseGet((Supplier<? extends K>) new Object());
+
     }
 
     @Override
