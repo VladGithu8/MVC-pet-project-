@@ -15,8 +15,6 @@ public abstract class AbstractService<K,T extends AbstractDao<K>> implements Ser
         this.entity = entity;
     }
 
-    Object object = new Object();
-
     @Override
     public K save(K t) {
             return entity
