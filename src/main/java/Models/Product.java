@@ -1,15 +1,6 @@
 package Models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +17,7 @@ public class Product implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "Product_OrderCart",
             joinColumns = @JoinColumn(name = "Product_id"),
             inverseJoinColumns = @JoinColumn(name = "OrderCart_id"))
@@ -41,19 +32,20 @@ public class Product implements Serializable {
     @Column(name = "price")
     private double price;
 
-    public Product(String productName, String description, double price,List<OrderCart> orderCartList) {
+    public Product(String productName, String description, double price) {
         this.description = description;
         this.price = price;
         this.productName = productName;
-        this.orderCartList = orderCartList;
     }
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public List<OrderCart> getOrderCart() {
         if (orderCartList == null) {
             return new ArrayList<OrderCart>();
@@ -61,25 +53,32 @@ public class Product implements Serializable {
             return orderCartList;
         }
     }
+
     public List<OrderCart> setOrderCart(List<OrderCart> orderCartList) {
         this.orderCartList = orderCartList;
         return orderCartList;
     }
+
     public String getProductName() {
         return productName;
     }
+
     public void setProductName(String productName) {
         this.productName = productName;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public double getPrice() {
         return price;
     }
+
     public void setPrice(double price) {
         this.price = price;
     }

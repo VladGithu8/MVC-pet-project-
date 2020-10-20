@@ -1,9 +1,16 @@
 import DAO.CustomerDaoImp;
+import DAO.OrderCartDaoImp;
+import DAO.ProductDaoImp;
 import Models.Customer;
 
+import Models.OrderCart;
+import Models.Product;
 import Services.CustomerService;
+import Services.OrderCartService;
+import Services.ProductService;
 import Utils.HibernateSessionFactoryUtil;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,36 +21,65 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
+
         CustomerDaoImp customerDAO = new CustomerDaoImp(sessionFactory);
         CustomerService customerService = new CustomerService(customerDAO);
 
+        ProductDaoImp productDaoImp = new ProductDaoImp(sessionFactory);
+        ProductService productService = new ProductService(productDaoImp);
+
+        OrderCartDaoImp orderCartDaoImp = new OrderCartDaoImp(sessionFactory);
+        OrderCartService orderCartService = new OrderCartService(orderCartDaoImp);
 
         Customer customer = new Customer("Evgen","Borovoi",25,"0932223344","BorEv@gmail.com");
         Customer customer1 = new Customer("Semen","Korobkin",34,"0603335566","SemenKorobkin@gmail.com");
         Customer customer2 = new Customer("Gamaz","Zamaz",19,"0501110099","GAMAZ@gmail.com");
 
-        Optional<Customer> oc = Optional.of(customer1);
+        OrderCart orderCart = new OrderCart();
+        OrderCart orderCart1 = new OrderCart();
 
-        oc.orElseGet(Customer::new);
+        Product product = new Product("Phone mi1","Best phone",12500);
+        Product product1 = new Product("Pen smart pen2000", "Best smart pen",5000);
+        Product product2 = new Product("Phone Iphone","Iphon is iphon",300000);
+        Product product3 = new Product("Laptop HP","cheap laptop",11000);
+        Product product4 = new Product("Watch smart watch","Best smart watch",9000);
 
-        List<Customer> customerList  = new ArrayList<>();
-        customerList.add(customer);
-        customerList.add(customer1);
-        customerList.add(customer2);
+        productService.save(product);
+        productService.save(product1);
+        productService.save(product2);
+        productService.save(product3);
+        productService.save(product4);
 
-        List<Customer> results = customerList
-                .stream()
-                .map(customerService::save)
-                .collect(Collectors.toList());
+        customerService.save(customer);
+        customerService.save(customer1);
+        customerService.save(customer2);
 
-        results.forEach(System.out::println);
+        ArrayList listProduct  = new ArrayList();
+        listProduct.add(product);
+        listProduct.add(product1);
+        listProduct.add(product3);
 
-        System.out.println(customerService.findById(129));
+        orderCart.setProductList(listProduct);
+        orderCart.setCustomerID(customer);
 
-        System.out.println(customerService.delete(customer));
+        List<OrderCart> order = new ArrayList<>();
+        order.add(orderCart);
+        customer.setOrderCart(order);
 
-        System.out.println(customerService.update(customerList.get(12)));
+        orderCartService.save(orderCart);
 
-        System.out.println("---------------------------------" + customerService.findAll().toString() + "-----------------------------------------------");
+        ArrayList listProduct1  = new ArrayList();
+        listProduct.add(product1);
+        listProduct.add(product1);
+        listProduct.add(product4);
+
+        orderCart.setProductList(listProduct1);
+        orderCart.setCustomerID(customer2);
+
+        List<OrderCart> order1 = new ArrayList<>();
+        order.add(orderCart1);
+        customer.setOrderCart(order1);
+
+        orderCartService.save(orderCart1);
     }
 }

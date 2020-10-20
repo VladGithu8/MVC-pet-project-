@@ -1,17 +1,8 @@
 package Models;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.GenerationType;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +19,13 @@ public class OrderCart {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinColumn(name = "customer_id")
     private Customer customerID;
 
     @ManyToMany
-    @JoinTable(name ="Product",
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinTable(name ="Product_Order",
             joinColumns = @JoinColumn(name ="OrderCart_id"),
             inverseJoinColumns = @JoinColumn(name= "Product_id"))
     private List<Product> productList;
@@ -45,22 +38,27 @@ public class OrderCart {
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public Customer getCustomerID() {
         return customerID;
     }
+
     public void setCustomerID(Customer customerID) {
         this.customerID = customerID;
     }
-    public List<Product> getProductList() {
+
+    public List<Product> getProductList (List listProduct) {
         if (productList == null) {
             return new ArrayList<Product>();
         } else {
             return productList;
         }
     }
+
     public List<Product> setProductList(List<Product> productList) {
         this.productList = productList;
         return productList;

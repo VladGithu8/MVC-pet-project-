@@ -1,5 +1,7 @@
 package Models;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -21,7 +23,8 @@ public class Customer  {
 
     public Customer() {}
 
-    @OneToMany(targetEntity = OrderCart.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = OrderCart.class, fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<OrderCart> orderCartList;
 
     @Id
@@ -50,42 +53,51 @@ public class Customer  {
         this.email = email;
         this.lastName = lastName;
         this.phone = phone;
-        orderCartList = new LinkedList<OrderCart>();
+
     }
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     public String getLastName() {
         return lastName;
     }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     public int getAge() {
         return age;
     }
+
     public void setAge(int age){
         this.age = age;
     }
+
     public String getPhone() {
         return phone;
     }
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
