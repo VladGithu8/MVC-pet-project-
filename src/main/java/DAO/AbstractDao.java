@@ -1,35 +1,42 @@
 package DAO;
 
+import com.sun.xml.bind.v2.model.core.ID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 
-    private Class<T> clazz;
+    private List<T> list = new LinkedList<>();
 
-    private final SessionFactory sessionFactory;
+    protected final Class<T> clazz;
 
-    protected AbstractDao(SessionFactory sessionFactory) {
+    protected SessionFactory sessionFactory;
+
+    protected Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
+    public AbstractDao(SessionFactory sessionFactory, Class<T> clazz){
+        this.clazz = clazz;
         this.sessionFactory = sessionFactory;
     }
 
-    public void setClazz(Class< T > clazzToSet){
-        this.clazz = clazzToSet;
-    }
-
-    ///todo:imp
     @Override
-    public Optional<T> findById(int id) throws SQLException {
-        return null;
+    public Optional<T> findById(Integer id) throws SQLException {
+        Session session = sessionFactory.openSession();
+        return Optional.ofNullable(session.get(clazz,id));
     }
 
     public List<T> findAll() {
-        return getCurrentSession().createQuery("from " + clazz.getName()).list();
+        Session session = sessionFactory.openSession();
+        List allToList = session.createQuery("FROM " + clazz.getSimpleName()).list();
+        return allToList;
     }
 
     public Optional<T> save(T entity) {
@@ -46,16 +53,29 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     public Optional<T> update(T entity) {
-        return (Optional<T>) getCurrentSession().merge(entity);
+        try (Session session = sessionFactory.openSession()) {
+            System.out.println(session);
+            Transaction t1 = session.beginTransaction();
+            session.update(entity);
+            t1.commit();
+            return Optional.of(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.of(entity);
+        }
     }
 
     public Optional<T> delete(T entity) {
-        getCurrentSession().delete(entity);
-        return Optional.of(entity);
-    }
-
-
-    protected Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+        try (Session session = sessionFactory.openSession()) {
+            System.out.println(session);
+            Transaction t1 = session.beginTransaction();
+            session.delete(entity);
+            t1.commit();
+            return Optional.of(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.of(entity);
+        }
     }
 }
+

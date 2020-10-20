@@ -1,14 +1,10 @@
 import DAO.CustomerDAOImp;
-import DAO.ProductDaoImp;
 import Models.Customer;
-import Models.Product;
 
 import Services.CustomerService;
 import Utils.HibernateSessionFactoryUtil;
-import jdk.nashorn.internal.runtime.options.Option;
 import org.hibernate.SessionFactory;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,5 +38,12 @@ public class Main {
 
         results.forEach(System.out::println);
 
+        System.out.println(customerService.findById(129));
+
+        System.out.println(customerService.delete(customer));
+
+        System.out.println(customerService.update(customerList.get(12)));
+
+        System.out.println("---------------------------------" + customerService.findAll().toString() + "-----------------------------------------------");
     }
 }

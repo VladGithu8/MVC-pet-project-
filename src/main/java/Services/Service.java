@@ -4,7 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface Service<T> {
-    T findById(int id);
+
+    T findById(Integer id) throws SQLException;
 
     T save(T t);
 

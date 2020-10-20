@@ -4,8 +4,7 @@ import DAO.AbstractDao;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Supplier;
+
 
 public abstract class AbstractService<K,T extends AbstractDao<K>> implements Service<K> {
 
@@ -19,27 +18,33 @@ public abstract class AbstractService<K,T extends AbstractDao<K>> implements Ser
     public K save(K t) {
             return entity
                     .save(t)
-                    .orElseGet(() -> { return (K) new Object();});
-
+                    .orElseGet(() -> { return (K) new Object();}
+                    );
     }
 
     @Override
-    public K findById(int id) {
-        return null;
+    public K findById(Integer id) throws SQLException {
+        return (K) entity.findById(id);
     }
 
     @Override
     public K update(K k) {
-        return null;
+        if(k == null){
+            System.out.println("Nothing to update");
+        }
+        return (K) entity.update(k);
     }
 
     @Override
     public K delete(K k) {
-        return null;
+        if(k == null){
+            System.out.println("Nothing to delete");
+        }
+        return (K) entity.delete(k);
     }
 
     @Override
     public List<K> findAll() {
-        return null;
+        return entity.findAll();
     }
 }
