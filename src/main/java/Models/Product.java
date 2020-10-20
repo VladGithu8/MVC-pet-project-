@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.GenerationType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class Product implements Serializable {
     @JoinTable(name = "Product_OrderCart",
             joinColumns = @JoinColumn(name = "Product_id"),
             inverseJoinColumns = @JoinColumn(name = "OrderCart_id"))
-    private List<OrderCart> orderCart;
+    private List<OrderCart> orderCartList;
 
     @Column(name = "product_name")
     private String productName;
@@ -40,10 +41,11 @@ public class Product implements Serializable {
     @Column(name = "price")
     private double price;
 
-    public Product(String productName, String description, double price) {
+    public Product(String productName, String description, double price,List<OrderCart> orderCartList) {
         this.description = description;
         this.price = price;
         this.productName = productName;
+        this.orderCartList = orderCartList;
     }
 
     public int getId() {
@@ -53,10 +55,15 @@ public class Product implements Serializable {
         this.id = id;
     }
     public List<OrderCart> getOrderCart() {
-        return orderCart;
+        if (orderCartList == null) {
+            return new ArrayList<OrderCart>();
+        } else {
+            return orderCartList;
+        }
     }
-    public void setOrderCart(List<OrderCart> orderCart) {
-        this.orderCart = orderCart;
+    public List<OrderCart> setOrderCart(List<OrderCart> orderCartList) {
+        this.orderCartList = orderCartList;
+        return orderCartList;
     }
     public String getProductName() {
         return productName;

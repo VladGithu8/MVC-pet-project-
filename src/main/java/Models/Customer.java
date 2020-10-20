@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.GenerationType;
 import javax.persistence.FetchType;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,6 +88,19 @@ public class Customer  {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<OrderCart> setOrderCart(List<OrderCart> orderCartList){
+        this.orderCartList = orderCartList;
+        return orderCartList;
+    }
+
+    public List<OrderCart> getOrderCart(List<OrderCart> orderCartList){
+        if(orderCartList == null){
+            return new ArrayList<OrderCart>();
+        }else{
+            return orderCartList;
+        }
     }
 
     @Override

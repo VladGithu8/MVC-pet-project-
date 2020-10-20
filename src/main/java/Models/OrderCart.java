@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.GenerationType;
 import javax.persistence.FetchType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,7 @@ public class OrderCart {
     private Customer customerID;
 
     @ManyToMany
-    @JoinTable(name ="Product_OrderCart",
+    @JoinTable(name ="Product",
             joinColumns = @JoinColumn(name ="OrderCart_id"),
             inverseJoinColumns = @JoinColumn(name= "Product_id"))
     private List<Product> productList;
@@ -54,9 +55,14 @@ public class OrderCart {
         this.customerID = customerID;
     }
     public List<Product> getProductList() {
-        return productList;
+        if (productList == null) {
+            return new ArrayList<Product>();
+        } else {
+            return productList;
+        }
     }
-    public void setProductList(List<Product> productList) {
+    public List<Product> setProductList(List<Product> productList) {
         this.productList = productList;
+        return productList;
     }
 }
