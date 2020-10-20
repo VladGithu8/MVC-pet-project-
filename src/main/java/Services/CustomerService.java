@@ -1,11 +1,11 @@
 package Services;
 
-import DAO.CustomerDAOImp;
+import DAO.CustomerDaoImp;
 import Models.Customer;
 
-public class CustomerService extends AbstractService<Customer, CustomerDAOImp>  {
+public class CustomerService extends AbstractService<Customer, CustomerDaoImp>  {
 
-    public CustomerService(CustomerDAOImp entity) {
+    public CustomerService(CustomerDaoImp entity) {
         super(entity);
     }
 }

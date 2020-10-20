@@ -1,4 +1,4 @@
-import DAO.CustomerDAOImp;
+import DAO.CustomerDaoImp;
 import Models.Customer;
 
 import Services.CustomerService;
@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
-        CustomerDAOImp customerDAO = new CustomerDAOImp(sessionFactory);
+        CustomerDaoImp customerDAO = new CustomerDaoImp(sessionFactory);
         CustomerService customerService = new CustomerService(customerDAO);
 
 

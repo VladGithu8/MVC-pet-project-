@@ -4,9 +4,9 @@ import Models.Customer;
 import org.hibernate.SessionFactory;
 
 
-public class CustomerDAOImp extends AbstractDao<Customer>  {
+public class CustomerDaoImp extends AbstractDao<Customer>  {
 
-    public CustomerDAOImp(SessionFactory sessionFactory) {
+    public CustomerDaoImp(SessionFactory sessionFactory) {
         super(sessionFactory, Customer.class);
     }
 
