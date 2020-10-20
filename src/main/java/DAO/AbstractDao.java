@@ -1,6 +1,5 @@
 package DAO;
 
-import com.sun.xml.bind.v2.model.core.ID;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
