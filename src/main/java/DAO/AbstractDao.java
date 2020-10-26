@@ -3,7 +3,9 @@ package DAO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
+import javax.persistence.RollbackException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,15 +40,25 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return allToList;
     }
 
-    public Optional<T> save(T entity) {
+    public Optional<T> save(T entity) throws ConstraintViolationException, RollbackException {
         try (Session session = sessionFactory.openSession()) {
-            System.out.println(session);
             Transaction t1 = session.beginTransaction();
             session.save(entity);
             t1.commit();
             return Optional.of(entity);
-        } catch (Exception e) {
+        } catch (RollbackException e) {
+            Throwable t = e.getCause();
             e.printStackTrace();
+            while ((t != null) && !(t instanceof ConstraintViolationException)){
+                t = t.getCause();
+                System.out.println("Dublicate");
+            }
+            if(t instanceof ConstraintViolationException){
+                Throwable finalT = t;
+                System.out.println("Dublicate" +t);
+            }
+        }
+        finally {
             return Optional.of(entity);
         }
     }
@@ -77,3 +89,4 @@ public abstract class AbstractDao<T> implements Dao<T> {
         }
     }
 }
+

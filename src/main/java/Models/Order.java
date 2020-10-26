@@ -1,9 +1,5 @@
 package Models;
 
-import Models.Customer;
-
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -14,6 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 
+import javax.persistence.CascadeType;
 import javax.persistence.GenerationType;
 import javax.persistence.FetchType;
 
@@ -21,31 +18,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name ="OrderCart")
-public class OrderCart {
+@Table(name ="Orders")
+public class Order {
 
-    public OrderCart() {}
+    public Order() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JoinColumn(name = "customer_id")
-    private Customer customerID;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Customer customer;
 
     @ManyToMany
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JoinTable(name ="Product_Order",
-            joinColumns = @JoinColumn(name ="OrderCart_id"),
+    @JoinTable(name ="Order_Products",
+            joinColumns = @JoinColumn(name ="Order_id"),
             inverseJoinColumns = @JoinColumn(name= "Product_id"))
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<Product>();
 
-    public OrderCart(Customer customerID,List<Product> productList) {
+    public Order(int id, Customer customer, List<Product> productList) {
+        this.id = id;
         this.productList = productList;
-        this.customerID = customerID;
+        this.customer = customer;
     }
 
     public int getId() {
@@ -56,15 +51,15 @@ public class OrderCart {
         this.id = id;
     }
 
-    public Customer getCustomerID() {
-        return customerID;
+    public Customer getCustomer(Customer customer) {
+        return customer;
     }
 
-    public void setCustomerID(Customer customerID) {
-        this.customerID = customerID;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public List<Product> getProductList (List listProduct) {
+    public List<Product> getProductList (List<Product> productList) {
         if (productList == null) {
             return new ArrayList<Product>();
         } else {
@@ -77,3 +72,4 @@ public class OrderCart {
         return productList;
     }
 }
+

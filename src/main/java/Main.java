@@ -1,21 +1,18 @@
 import DAO.CustomerDaoImp;
-import DAO.OrderCartDaoImp;
+import DAO.OrderDaoImp;
 import DAO.ProductDaoImp;
 import Models.Customer;
 
-import Models.OrderCart;
+import Models.Order;
 import Models.Product;
 import Services.CustomerService;
-import Services.OrderCartService;
+import Services.OrderService;
 import Services.ProductService;
 import Utils.HibernateSessionFactoryUtil;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
@@ -28,58 +25,112 @@ public class Main {
         ProductDaoImp productDaoImp = new ProductDaoImp(sessionFactory);
         ProductService productService = new ProductService(productDaoImp);
 
-        OrderCartDaoImp orderCartDaoImp = new OrderCartDaoImp(sessionFactory);
-        OrderCartService orderCartService = new OrderCartService(orderCartDaoImp);
+        OrderDaoImp orderDaoImp = new OrderDaoImp(sessionFactory);
+        OrderService orderService = new OrderService(orderDaoImp);
 
-        Customer customer = new Customer("Evgen","Borovoi",25,"0932223344","BorEv@gmail.com");
-        Customer customer1 = new Customer("Semen","Korobkin",34,"0603335566","SemenKorobkin@gmail.com");
-        Customer customer2 = new Customer("Gamaz","Zamaz",19,"0501110099","GAMAZ@gmail.com");
+        Customer customer = new Customer();
 
-        OrderCart orderCart = new OrderCart();
-        OrderCart orderCart1 = new OrderCart();
-
-        Product product = new Product("Phone mi1","Best phone",12500);
-        Product product1 = new Product("Pen smart pen2000", "Best smart pen",5000);
-        Product product2 = new Product("Phone Iphone","Iphon is iphon",300000);
-        Product product3 = new Product("Laptop HP","cheap laptop",11000);
-        Product product4 = new Product("Watch smart watch","Best smart watch",9000);
-
-        productService.save(product);
-        productService.save(product1);
-        productService.save(product2);
-        productService.save(product3);
-        productService.save(product4);
-
+        customer.setFirstName("Pavel");
+        customer.setLastName("Borchanskiy");
+        customer.setAge(24);
+        customer.setEmail("pav220011@gmail.com");
+        customer.setPhone("0934456577");
         customerService.save(customer);
+
+        Customer customer1 = new Customer();
+        customer1.setFirstName("Michail");
+        customer1.setLastName("Vanish");
+        customer1.setAge(44);
+        customer1.setEmail("micha88@gmail.com");
+        customer1.setPhone("0678894545");
         customerService.save(customer1);
+
+        Customer customer2 = new Customer();
+        customer2.setFirstName("Gosha");
+        customer2.setLastName("Polevoi");
+        customer2.setAge(21);
+        customer2.setEmail("palev1@gmail.com");
+        customer2.setPhone("0505679898");
         customerService.save(customer2);
 
-        ArrayList listProduct  = new ArrayList();
-        listProduct.add(product);
-        listProduct.add(product1);
-        listProduct.add(product3);
 
-        orderCart.setProductList(listProduct);
-        orderCart.setCustomerID(customer);
+        Product product = new Product();
+        product.setProductName("Phone mi2");
+        product.setPrice(12800);
+        product.setDescription("The beast middle coast phone");
+        productService.save(product);
 
-        List<OrderCart> order = new ArrayList<>();
-        order.add(orderCart);
-        customer.setOrderCart(order);
 
-        orderCartService.save(orderCart);
+        Product product1 = new Product();
+        product1.setProductName("Phone MIX6");
+        product1.setPrice(7000);
+        product1.setDescription("The beast cheap phone");
+        productService.save(product1);
 
-        ArrayList listProduct1  = new ArrayList();
-        listProduct.add(product1);
-        listProduct.add(product1);
-        listProduct.add(product4);
+        Product product2 = new Product();
+        product2.setProductName("Phone Iphone");
+        product2.setPrice(32300);
+        product2.setDescription("Top of the year");
+        productService.save(product2);
 
-        orderCart.setProductList(listProduct1);
-        orderCart.setCustomerID(customer2);
+        Product product3 = new Product();
+        product3.setProductName("Smart watch SmartGear");
+        product3.setPrice(11000);
+        product3.setDescription("Whole world on your hand");
+        productService.save(product3);
 
-        List<OrderCart> order1 = new ArrayList<>();
-        order.add(orderCart1);
-        customer.setOrderCart(order1);
+        Product product4 = new Product();
+        product4.setProductName("Smart watch AppleWatch");
+        product4.setPrice(18800);
+        product4.setDescription("Now Apple in your hand and on it!");
+        productService.save(product4);
 
-        orderCartService.save(orderCart1);
+
+        List<Product> productList = new ArrayList<Product>();
+        productList.add(product);
+        productList.add(product2);
+        productList.add(product4);
+
+        List<Product> productList1 = new ArrayList<Product>();
+        productList1.add(product2);
+        productList1.add(product);
+        productList1.add(product1);
+        productList1.add(product3);
+
+        List<Product> productList2 = new ArrayList<Product>();
+        productList2.add(product1);
+        productList2.add(product3);
+
+        Order order = new Order();
+        order.setProductList(productList);
+        order.setCustomer(customer);
+        List<Order> orderList = new ArrayList<Order>();
+        orderList.add(order);
+        customer.getOrder(orderList);
+
+        Order order1 = new Order();
+        order1.setProductList(productList1);
+        order1.setCustomer(customer1);
+        List<Order> orderList1 = new ArrayList<Order>();
+        orderList1.add(order1);
+        customer1.getOrder(orderList1);
+
+        Order order2 = new Order();
+        order2.setProductList(productList2);
+        order2.setCustomer(customer2);
+        List<Order> orderList2 = new ArrayList<Order>();
+        orderList2.add(order2);
+        customer2.getOrder(orderList2);
+
+        orderService.save(order);
+        orderService.save(order1);
+        orderService.save(order2);
+
+
+
+
+
+
+
     }
 }

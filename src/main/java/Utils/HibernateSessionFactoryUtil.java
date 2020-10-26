@@ -1,7 +1,7 @@
 package Utils;
 
 import Models.Customer;
-import Models.OrderCart;
+import Models.Order;
 import Models.Product;
 
 import org.hibernate.PersistentObjectException;
@@ -19,7 +19,7 @@ public class HibernateSessionFactoryUtil {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration();
-                configuration.addAnnotatedClass(OrderCart.class);
+                configuration.addAnnotatedClass(Order.class);
                 configuration.addAnnotatedClass(Customer.class);
                 configuration.addAnnotatedClass(Product.class);
 
@@ -33,6 +33,5 @@ public class HibernateSessionFactoryUtil {
             }
         } return sessionFactory;
     }
-
-
 }
+

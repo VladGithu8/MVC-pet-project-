@@ -1,33 +1,35 @@
 package Models;
 
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
-import javax.persistence.OneToMany;
-
-import javax.persistence.GenerationType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="Customer")
+@Table(name="Customer",
+        uniqueConstraints = {@UniqueConstraint
+                (columnNames = {"phone","e_mail"})})
 public class Customer  {
 
     public Customer() {}
 
-    @OneToMany(targetEntity = OrderCart.class, fetch = FetchType.EAGER)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private List<OrderCart> orderCartList;
+    @OneToMany(mappedBy = "customer",
+            targetEntity = Order.class,
+            fetch = FetchType.LAZY,
+            cascade = javax.persistence.CascadeType.ALL)
+    private List<Order> orderList;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name="id")
+    @Column (name="id", unique = true, nullable = false)
     private int id;
 
     @Column(name="first_name")
@@ -45,13 +47,14 @@ public class Customer  {
     @Column(name="e_mail")
     private String email;
 
-    public Customer(String firstName, String lastName, int age, String phone, String email){
+    public Customer(int id, String firstName, String lastName, int age, String phone, String email, List<Order> orderList){
+        this.id = id;
         this.age = age;
         this.firstName = firstName;
         this.email = email;
         this.lastName = lastName;
         this.phone = phone;
-
+        this.orderList = orderList;
     }
 
     public int getId() {
@@ -102,16 +105,16 @@ public class Customer  {
         this.email = email;
     }
 
-    public List<OrderCart> setOrderCart(List<OrderCart> orderCartList){
-        this.orderCartList = orderCartList;
-        return orderCartList;
+    public List<Order> setOrder(List<Order> orderList) {
+        this.orderList = orderList;
+        return orderList;
     }
 
-    public List<OrderCart> getOrderCart(List<OrderCart> orderCartList){
-        if(orderCartList == null){
-            return new ArrayList<OrderCart>();
+    public List<Order> getOrder(List<Order> orderList){
+        if(orderList == null){
+            return new ArrayList<Order>();
         }else{
-            return orderCartList;
+            return orderList;
         }
     }
 
@@ -126,3 +129,4 @@ public class Customer  {
                 "email="+email+'}';
     }
 }
+

@@ -7,7 +7,7 @@ public interface Service<T> {
 
     T findById(Integer id) throws SQLException;
 
-    T save(T t);
+    T save(T t) throws SQLException;
 
     T update(T t);
 
@@ -15,3 +15,4 @@ public interface Service<T> {
 
     List<T> findAll();
 }
+

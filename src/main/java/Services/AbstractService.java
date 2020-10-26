@@ -1,6 +1,9 @@
 package Services;
 
 import DAO.AbstractDao;
+import org.hibernate.DuplicateMappingException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.internal.SQLExceptionTypeDelegate;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -15,11 +18,11 @@ public abstract class AbstractService<K,T extends AbstractDao<K>> implements Ser
     }
 
     @Override
-    public K save(K t) {
-            return entity
-                    .save(t)
-                    .orElseGet(() -> { return (K) new Object();}
-                    );
+    public K save(K t) throws ConstraintViolationException, DuplicateMappingException {
+             return entity
+                .save(t)
+                .orElseGet(() -> { return (K) new Object();}
+                );
     }
 
     @Override
@@ -48,3 +51,4 @@ public abstract class AbstractService<K,T extends AbstractDao<K>> implements Ser
         return entity.findAll();
     }
 }
+

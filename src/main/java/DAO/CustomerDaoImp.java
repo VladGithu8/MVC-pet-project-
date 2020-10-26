@@ -11,3 +11,4 @@ public class CustomerDaoImp extends AbstractDao<Customer>  {
     }
 
 }
+

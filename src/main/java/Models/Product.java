@@ -1,19 +1,16 @@
 package Models;
 
-import Models.OrderCart;
-import org.hibernate.annotations.Cascade;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-
-import javax.persistence.GenerationType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,11 +28,8 @@ public class Product implements Serializable {
     @Column(name = "id")
     private int id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "Product_OrderCart",
-            joinColumns = @JoinColumn(name = "Product_id"),
-            inverseJoinColumns = @JoinColumn(name = "OrderCart_id"))
-    private List<OrderCart> orderCartList;
+    @ManyToMany(mappedBy = "productList" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Order> orderList;
 
     @Column(name = "product_name")
     private String productName;
@@ -46,10 +40,13 @@ public class Product implements Serializable {
     @Column(name = "price")
     private double price;
 
-    public Product(String productName, String description, double price) {
+    public Product(int id, String productName, String description, double price, List<Order> orderList) {
+        this.id = id;
         this.description = description;
         this.price = price;
         this.productName = productName;
+        this.orderList = orderList;
+
     }
 
     public int getId() {
@@ -60,17 +57,17 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public List<OrderCart> getOrderCart() {
-        if (orderCartList == null) {
-            return new ArrayList<OrderCart>();
+    public List<Order> getOrder() {
+        if (orderList == null) {
+            return new ArrayList<Order>();
         } else {
-            return orderCartList;
+            return orderList;
         }
     }
 
-    public List<OrderCart> setOrderCart(List<OrderCart> orderCartList) {
-        this.orderCartList = orderCartList;
-        return orderCartList;
+    public List<Order> setOrder(List<Order> orderList) {
+        this.orderList = orderList;
+        return orderList;
     }
 
     public String getProductName() {
@@ -97,3 +94,4 @@ public class Product implements Serializable {
         this.price = price;
     }
 }
+

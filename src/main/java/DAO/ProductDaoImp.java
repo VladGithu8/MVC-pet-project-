@@ -9,3 +9,4 @@ public class ProductDaoImp extends AbstractDao<Product> {
         super(sessionFactory,Product.class);
     }
 }
+

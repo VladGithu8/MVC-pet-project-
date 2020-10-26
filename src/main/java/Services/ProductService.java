@@ -9,3 +9,4 @@ public class ProductService extends AbstractService<Product, ProductDaoImp> {
         super(entity);
     }
 }
+
