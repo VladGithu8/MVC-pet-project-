@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Service<T> {
 
-    T findById(Integer id) throws SQLException;
+    T findById(Integer id) throws Throwable;
 
     T save(T t) throws SQLException;
 

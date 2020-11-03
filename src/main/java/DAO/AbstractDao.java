@@ -1,19 +1,19 @@
 package DAO;
 
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.exception.ConstraintViolationException;
 
-import javax.persistence.RollbackException;
+import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
-
-    private List<T> list = new LinkedList<>();
 
     protected final Class<T> clazz;
 
@@ -23,70 +23,66 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return sessionFactory.getCurrentSession();
     }
 
-    public AbstractDao(SessionFactory sessionFactory, Class<T> clazz){
+    public AbstractDao(SessionFactory sessionFactory, Class<T> clazz) {
         this.clazz = clazz;
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
     public Optional<T> findById(Integer id) throws SQLException {
-        Session session = sessionFactory.openSession();
-        return Optional.ofNullable(session.get(clazz,id));
+        T t = null;
+        try (Session session = sessionFactory.openSession()) {
+            t = session.find(clazz, id);
+            Transaction t1 = session.beginTransaction();
+            Hibernate.initialize(t);
+            t1.commit();
+        } catch (EntityNotFoundException hE) {
+            throw new RuntimeException(hE);
+        }
+            return Optional.ofNullable(t);
     }
 
     public List<T> findAll() {
         Session session = sessionFactory.openSession();
-        List allToList = session.createQuery("FROM " + clazz.getSimpleName()).list();
+        List<T> allToList = session.createQuery("FROM " + clazz.getSimpleName()).list();
         return allToList;
     }
 
-    public Optional<T> save(T entity) throws ConstraintViolationException, RollbackException {
+    public Optional<T> save(T entity) throws JDBCException, SQLException {
         try (Session session = sessionFactory.openSession()) {
             Transaction t1 = session.beginTransaction();
             session.save(entity);
             t1.commit();
-            return Optional.of(entity);
-        } catch (RollbackException e) {
-            Throwable t = e.getCause();
-            e.printStackTrace();
-            while ((t != null) && !(t instanceof ConstraintViolationException)){
-                t = t.getCause();
-                System.out.println("Dublicate");
+        } catch (JDBCException je) {
+            SQLException cause = (SQLException) je.getCause();
+            System.out.println(cause.getMessage());
             }
-            if(t instanceof ConstraintViolationException){
-                Throwable finalT = t;
-                System.out.println("Dublicate" +t);
-            }
+            return Optional.ofNullable(entity);
         }
-        finally {
-            return Optional.of(entity);
-        }
-    }
 
-    public Optional<T> update(T entity) {
-        try (Session session = sessionFactory.openSession()) {
-            System.out.println(session);
-            Transaction t1 = session.beginTransaction();
-            session.update(entity);
-            t1.commit();
-            return Optional.of(entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.of(entity);
+        public Optional<T> update (T entity) {
+            try (Session session = sessionFactory.openSession()) {
+                Transaction t1 = session.beginTransaction();
+                session.update(entity);
+                t1.commit();
+            } catch(RuntimeException hE) {
+                throw new EntityNotFoundException();
+                }
+            return Optional.ofNullable(entity);
         }
-    }
 
-    public Optional<T> delete(T entity) {
-        try (Session session = sessionFactory.openSession()) {
-            System.out.println(session);
-            Transaction t1 = session.beginTransaction();
-            session.delete(entity);
-            t1.commit();
-            return Optional.of(entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.of(entity);
-        }
+        public Optional<T> delete (T entity){
+            try (Session session = sessionFactory.openSession()) {
+                Transaction t1 = session.beginTransaction();
+                if (entity != null) {
+                    session.delete(entity);
+                }
+                t1.commit();
+            } catch (HibernateException hE) {
+                ObjectNotFoundException cause =(ObjectNotFoundException) hE.getCause();
+                System.out.println(cause.getMessage());
+                }
+            return Optional.ofNullable(entity);
     }
 }
+
 

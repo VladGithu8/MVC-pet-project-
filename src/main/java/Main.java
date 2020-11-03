@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Throwable {
 
         SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
 
@@ -60,7 +60,6 @@ public class Main {
         product.setDescription("The beast middle coast phone");
         productService.save(product);
 
-
         Product product1 = new Product();
         product1.setProductName("Phone MIX6");
         product1.setPrice(7000);
@@ -85,7 +84,6 @@ public class Main {
         product4.setDescription("Now Apple in your hand and on it!");
         productService.save(product4);
 
-
         List<Product> productList = new ArrayList<Product>();
         productList.add(product);
         productList.add(product2);
@@ -100,6 +98,7 @@ public class Main {
         List<Product> productList2 = new ArrayList<Product>();
         productList2.add(product1);
         productList2.add(product3);
+
 
         Order order = new Order();
         order.setProductList(productList);
@@ -126,11 +125,10 @@ public class Main {
         orderService.save(order1);
         orderService.save(order2);
 
-
-
-
-
-
-
+//        For your tests
+//       customerService.update(customerService.findById(1).setFirstName("Goods"));
+//       customerService.delete(customerService.findById(2));
+//
+//       productService.delete(productService.findById(1));
     }
 }

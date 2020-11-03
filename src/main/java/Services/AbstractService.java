@@ -3,47 +3,47 @@ package Services;
 import DAO.AbstractDao;
 import org.hibernate.DuplicateMappingException;
 import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.exception.internal.SQLExceptionTypeDelegate;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 
 
 public abstract class AbstractService<K,T extends AbstractDao<K>> implements Service<K> {
 
-    protected final T entity;
+    protected T entity;
 
     protected AbstractService(T entity) {
         this.entity = entity;
     }
 
     @Override
-    public K save(K t) throws ConstraintViolationException, DuplicateMappingException {
+    public K save(K k) throws ConstraintViolationException, DuplicateMappingException, SQLException {
              return entity
-                .save(t)
+                .save(k)
                 .orElseGet(() -> { return (K) new Object();}
                 );
     }
 
     @Override
-    public K findById(Integer id) throws SQLException {
-        return (K) entity.findById(id);
-    }
+    public K findById(Integer id) throws Throwable {
+        if (entity.findById(id) == null) {
+            System.exit(0);
+        }
+            return entity.findById(id)
+                    .orElseThrow(() -> {
+                        return new NullPointerException("Not found anything on id: " + id).getCause();
+                    });
+        }
 
     @Override
     public K update(K k) {
-        if(k == null){
-            System.out.println("Nothing to update");
-        }
-        return (K) entity.update(k);
+        return  entity.update(k).orElseThrow(() -> new EntityNotFoundException("Nothing to update"));
     }
 
     @Override
     public K delete(K k) {
-        if(k == null){
-            System.out.println("Nothing to delete");
-        }
-        return (K) entity.delete(k);
+        return entity.delete(k).orElseThrow(() -> new EntityNotFoundException("Nothing to delete"));
     }
 
     @Override

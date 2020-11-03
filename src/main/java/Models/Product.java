@@ -1,5 +1,8 @@
 package Models;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,15 +10,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name ="Product")
@@ -29,6 +29,7 @@ public class Product implements Serializable {
     private int id;
 
     @ManyToMany(mappedBy = "productList" ,fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @NotFound(action = NotFoundAction.IGNORE)
     private List<Order> orderList;
 
     @Column(name = "product_name")
@@ -53,8 +54,9 @@ public class Product implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
+    public Product setId(int id) {
         this.id = id;
+        return Product.this;
     }
 
     public List<Order> getOrder() {
@@ -74,24 +76,27 @@ public class Product implements Serializable {
         return productName;
     }
 
-    public void setProductName(String productName) {
+    public Product setProductName(String productName) {
         this.productName = productName;
+        return Product.this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Product setDescription(String description) {
         this.description = description;
+        return Product.this;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public Product setPrice(double price) {
         this.price = price;
+        return Product.this;
     }
 }
 

@@ -1,5 +1,6 @@
 package DAO;
 
+import org.hibernate.HibernateException;
 import org.hibernate.exception.ConstraintViolationException;
 
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface Dao<T> {
 
-    Optional<T> findById(Integer id) throws SQLException;
+    Optional<T> findById(Integer id) throws SQLException, HibernateException;
 
     Optional<T> save(T t) throws SQLException, ConstraintViolationException;
 

@@ -1,5 +1,8 @@
 package Models;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -29,13 +32,15 @@ public class Order {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Customer customer;
 
     @ManyToMany
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinTable(name ="Order_Products",
             joinColumns = @JoinColumn(name ="Order_id"),
             inverseJoinColumns = @JoinColumn(name= "Product_id"))
-    private List<Product> productList = new ArrayList<Product>();
+    private List<Product> productList;
 
     public Order(int id, Customer customer, List<Product> productList) {
         this.id = id;
@@ -47,16 +52,18 @@ public class Order {
         return id;
     }
 
-    public void setId(int id) {
+    public Order setId(int id) {
         this.id = id;
+        return Order.this;
     }
 
     public Customer getCustomer(Customer customer) {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public Order setCustomer(Customer customer) {
         this.customer = customer;
+        return Order.this;
     }
 
     public List<Product> getProductList (List<Product> productList) {
