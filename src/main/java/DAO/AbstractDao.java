@@ -3,13 +3,13 @@ package DAO;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,31 +19,38 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     protected SessionFactory sessionFactory;
 
-    protected Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
-    }
-
     public AbstractDao(SessionFactory sessionFactory, Class<T> clazz) {
         this.clazz = clazz;
         this.sessionFactory = sessionFactory;
     }
 
-    public Optional<T> findById(Integer id) throws SQLException {
+    public Optional<T> findById(Integer id) {
         T t = null;
+        Transaction t1 = null;
         try (Session session = sessionFactory.openSession()) {
             t = session.find(clazz, id);
-            Transaction t1 = session.beginTransaction();
+            t1 = session.beginTransaction();
             Hibernate.initialize(t);
             t1.commit();
-        } catch (EntityNotFoundException hE) {
-            throw new RuntimeException(hE);
-        }
             return Optional.ofNullable(t);
+        } catch (HibernateException hE) {
+            if (t1 != null) {
+                t1.rollback();
+            }
+            System.err.println("FindById exception message" );
+            hE.printStackTrace();
+            return Optional.ofNullable(t);
+        }
     }
 
+    @Override
     public List<T> findAll() {
         Session session = sessionFactory.openSession();
         List<T> allToList = session.createQuery("FROM " + clazz.getSimpleName()).list();
+        Transaction t1 = session.beginTransaction();
+        Hibernate.initialize(allToList);
+        t1.commit();
+        session.close();
         return allToList;
     }
 
@@ -78,7 +85,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
                 }
                 t1.commit();
             } catch (HibernateException hE) {
-                ObjectNotFoundException cause =(ObjectNotFoundException) hE.getCause();
+                SQLException cause = (SQLException) hE.getCause();
                 System.out.println(cause.getMessage());
                 }
             return Optional.ofNullable(entity);

@@ -4,7 +4,6 @@ import Models.Customer;
 import Models.Order;
 import Models.Product;
 
-import org.hibernate.PersistentObjectException;
 import org.hibernate.SessionException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -15,7 +14,7 @@ public class HibernateSessionFactoryUtil {
 
     private static SessionFactory sessionFactory;
 
-    public static SessionFactory getSessionFactory() throws PersistentObjectException, SessionException {
+    public static SessionFactory getSessionFactory() throws SessionException {
         if (sessionFactory == null) {
             try {
                 Configuration configuration = new Configuration();
@@ -25,13 +24,15 @@ public class HibernateSessionFactoryUtil {
 
                 configuration.configure();
                 StandardServiceRegistry build = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-                SessionFactory sessionFactory = configuration.buildSessionFactory(build);
+                sessionFactory = configuration.buildSessionFactory(build);
                 System.out.println(sessionFactory);
                 return sessionFactory;
-            } catch (Exception e) {
-                System.out.println("Get EXCEPTION" + e);
+            } catch (SessionException sE) {
+                throw sE;
             }
-        } return sessionFactory;
+        } else{
+            return sessionFactory;
+        }
     }
 }
 

@@ -17,6 +17,6 @@ public interface Dao<T> {
 
     Optional<T> delete(T t) throws SQLException;
 
-    List<T> findAll() throws SQLException;
+    List<T> findAll () throws SQLException;
 }
 

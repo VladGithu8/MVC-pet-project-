@@ -2,17 +2,18 @@ package Services;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
-public interface Service<T> {
+public interface Service<K> {
 
-    T findById(Integer id) throws Throwable;
+    Optional<K> findById(Integer id) throws Throwable;
 
-    T save(T t) throws SQLException;
+    Optional<K> save(K k) throws SQLException;
 
-    T update(T t);
+    Optional<K> update(K k) throws SQLException;
 
-    T delete(T t);
+    Optional<K> delete(K k) throws SQLException;
 
-    List<T> findAll();
+    List<K> findAll() throws SQLException;
 }
 
