@@ -11,3 +11,4 @@
         <mapping package="Models"/>
     </session-factory>
 </hibernate-configuration>
+

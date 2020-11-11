@@ -36,7 +36,6 @@ public class Order {
     private Customer customer;
 
     @ManyToMany
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinTable(name ="Order_Products",
             joinColumns = @JoinColumn(name ="Order_id"),
             inverseJoinColumns = @JoinColumn(name= "Product_id"))

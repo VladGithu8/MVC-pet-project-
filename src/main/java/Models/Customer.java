@@ -28,7 +28,6 @@ public class Customer  {
             targetEntity = Order.class,
             fetch = FetchType.LAZY,
             cascade = javax.persistence.CascadeType.ALL)
-    @NotFound(action = NotFoundAction.IGNORE)
     private List<Order> orderList;
 
     @Id

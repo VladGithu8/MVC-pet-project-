@@ -24,6 +24,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public Optional<T> findById(Integer id) {
         T t = null;
         Transaction t1 = null;
@@ -45,15 +46,19 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     @Override
     public List<T> findAll() {
-        Session session = sessionFactory.openSession();
-        List<T> allToList = session.createQuery("FROM " + clazz.getSimpleName()).list();
-        Transaction t1 = session.beginTransaction();
-        Hibernate.initialize(allToList);
-        t1.commit();
-        session.close();
-        return allToList;
+        try (Session session = sessionFactory.openSession()) {
+            List<T> allToList = session.createQuery("FROM " + clazz.getSimpleName()).list();
+            Transaction t1 = session.beginTransaction();
+            Hibernate.initialize(allToList);
+            t1.commit();
+            session.close();
+            return allToList;
+        } catch (RuntimeException e) {
+            throw new EntityNotFoundException();
+        }
     }
 
+    @Override
     public Optional<T> save(T entity) throws JDBCException, SQLException {
         try (Session session = sessionFactory.openSession()) {
             Transaction t1 = session.beginTransaction();
@@ -66,6 +71,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
             return Optional.ofNullable(entity);
         }
 
+        @Override
         public Optional<T> update (T entity) {
             try (Session session = sessionFactory.openSession()) {
                 Transaction t1 = session.beginTransaction();
@@ -77,6 +83,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
             return Optional.ofNullable(entity);
         }
 
+        @Override
         public Optional<T> delete (T entity){
             try (Session session = sessionFactory.openSession()) {
                 Transaction t1 = session.beginTransaction();
