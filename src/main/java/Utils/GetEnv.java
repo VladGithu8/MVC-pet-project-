@@ -16,7 +16,4 @@ public class GetEnv {
                 .orElseThrow(() -> new NotFoundException("mvcpass is not set in the environment"));
 
     }
-
-
-
 }
