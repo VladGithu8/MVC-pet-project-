@@ -10,14 +10,12 @@ import Services.OrderService;
 import Services.ProductService;
 import Utils.HibernateSessionFactoryUtil;
 import org.hibernate.SessionFactory;
-import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Main {
-    public static void main(String[] args) throws NullPointerException, SQLException {
+    public static void main(String[] args) throws NullPointerException, SQLException{
 
         SessionFactory sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
 
@@ -127,27 +125,6 @@ public class Main {
         orderService.save(order1);
         orderService.save(order2);
 
-//        For your tests
-//        First start uncomment code/ then uncomment this one and start app second time
-
-//        System.out.println(productService.findAll());
-//        System.out.println(orderService.findAll());
-
-//        Optional<Customer> cst = customerService.findById(1);
-//        Optional<Product> pr1 = productService.findById(3);
-//
-//        if(pr1 == null){
-//            System.out.println("There no product");
-//        }else{
-//            productService.update(pr1.get().setDescription("What the fuck"));
-//        }
-//
-//        Optional<Customer> test = customerService.findById(4);
-//        if(test == null){
-//            System.out.print("There is null");
-//        }else{
-//            customerService.update(test.get().setFirstName("dgssdfgshs"));
-//        }
     }
 }
 
