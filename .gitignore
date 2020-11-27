@@ -1,2 +1,13 @@
 .idea
+<<<<<<< HEAD
+
+MVC.pet.iml
+..gitignore.swp
+
+target
+
+
+
+=======
 hibernate.cfg.xml
+>>>>>>> origin
