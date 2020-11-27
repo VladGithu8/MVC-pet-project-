@@ -1,19 +1,34 @@
 package Utils;
 import javassist.NotFoundException;
+import org.hibernate.internal.build.AllowPrintStacktrace;
+
 import java.util.Optional;
 
 public class GetEnv {
 
-    public static String getEnvLogin() throws NotFoundException {
-        String mvclogin;
-        return mvclogin = Optional.ofNullable(System.getenv("MVCLOGIN"))
-                .orElseThrow(() -> new NotFoundException("mvclogin is not set in the environment"));
+    @AllowPrintStacktrace
+    public static String getEnvLogin() {
+        String mvclogin = "There is no Login hire";
+        try {
+            mvclogin = Optional.ofNullable(System.getenv("MVCLOGIN"))
+                    .orElseThrow(() -> new NotFoundException("mvclogin is not set in the environment"));
+            return mvclogin;
+        } catch (NotFoundException nE) {
+            nE.printStackTrace();
+        }
+        return mvclogin;
     }
 
-    public static String getEnvPass() throws NotFoundException {
-        String mvcpass;
-        return mvcpass = Optional.ofNullable(System.getenv("MVCPASS"))
-                .orElseThrow(() -> new NotFoundException("mvcpass is not set in the environment"));
-
+    @AllowPrintStacktrace
+    public static String getEnvPass() {
+        String mvcpass = "There is no Password hire";
+        try {
+            mvcpass = Optional.ofNullable(System.getenv("MVCPASS"))
+                    .orElseThrow(() -> new NotFoundException("mvcpassword is not set in the environment"));
+            return mvcpass;
+        } catch (NotFoundException nE) {
+            nE.printStackTrace();
+        }
+        return mvcpass;
     }
 }

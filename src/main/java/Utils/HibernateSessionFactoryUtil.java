@@ -4,7 +4,6 @@ import Models.Customer;
 import Models.Order;
 import Models.Product;
 
-import javassist.NotFoundException;
 import org.hibernate.SessionException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -13,34 +12,17 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateSessionFactoryUtil {
 
-    static String a;
-    static {
-        try {
-            a = GetEnv.getEnvLogin();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String b;
-    static {
-        try {
-            b = GetEnv.getEnvPass();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
     private static SessionFactory sessionFactory;
 
-    public HibernateSessionFactoryUtil() {
-    }
-
     public static SessionFactory getSessionFactory() throws SessionException {
+        GetEnv getEnv = new GetEnv();
+        String a, b;
+        a = getEnv.getEnvLogin();
+        b = getEnv.getEnvPass();
+
         if (sessionFactory == null) {
             try {
-                Configuration configuration = new Configuration()
+                        Configuration configuration = new Configuration()
                         .setProperty("hibernate.connection.driver_class","com.mysql.jdbc.Driver")
                         .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/mvctest")
                         .setProperty("hibernate.show_sql", "true")
