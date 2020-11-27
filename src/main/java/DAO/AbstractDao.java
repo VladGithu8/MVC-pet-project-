@@ -53,7 +53,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
             t1.commit();
             session.close();
             return allToList;
-        } catch (RuntimeException e) {
+        } catch (HibernateException e) {
             throw new EntityNotFoundException();
         }
     }

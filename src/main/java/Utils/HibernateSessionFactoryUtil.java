@@ -22,15 +22,15 @@ public class HibernateSessionFactoryUtil {
 
         if (sessionFactory == null) {
             try {
-                        Configuration configuration = new Configuration()
-                        .setProperty("hibernate.connection.driver_class","com.mysql.jdbc.Driver")
+                Configuration configuration = new Configuration()
+                        .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
                         .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/mvctest")
                         .setProperty("hibernate.show_sql", "true")
-                        .setProperty("hibernate.dialect","org.hibernate.dialect.MySQL8Dialect")
-                        .setProperty("hibernate.hbm2ddl.auto","update")
+                        .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")
+                        .setProperty("hibernate.hbm2ddl.auto", "update")
                         .setProperty("default_entity_mode", "dynamic-map")
-                        .setProperty("hibernate.connection.username", a )
-                        .setProperty("hibernate.connection.password", b )
+                        .setProperty("hibernate.connection.username", a)
+                        .setProperty("hibernate.connection.password", b)
                         .addAnnotatedClass(Order.class)
                         .addAnnotatedClass(Customer.class)
                         .addAnnotatedClass(Product.class);
@@ -38,14 +38,15 @@ public class HibernateSessionFactoryUtil {
                 StandardServiceRegistry build = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(build);
                 System.out.println(sessionFactory);
-                return sessionFactory ;
+                return sessionFactory;
             } catch (SessionException sE) {
-                throw sE;
+                if (sE != null) {
+                    sE.printStackTrace();
+                } else {
+                }
             }
-        } else{
-            return sessionFactory;
         }
+        return sessionFactory;
     }
 }
-
 
