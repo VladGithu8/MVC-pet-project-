@@ -15,50 +15,120 @@
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
           crossorigin="anonymous">
 </head>
-<body>
+<br>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 bg-dark d-flex text-light justify-content-center align-items-center" style="height:100vh">
+<nav class="navbar navbar-primary bg-dark">
+    <h3 style="color: white">Customers</h3>
+</nav>
 
-            <form>
+</br>
+
+<div class="row" >
+    <div class="col-sm-4">
+        <div class="container bg-dark text-white align-items-lg-baseline">
+
+            <form id="CustomerForm" name="CustomerForm">
                 <div class="form-group">
-                    <label for="FirstnameInput">FIRST NAME</label>
-                    <input type="text" class="form-control" id="FirstnameInput" aria-describedby="UserFirstname">
+                    <label for="FirstNameInput">FIRST NAME</label>
+                    <input type="text" name="FirstNameInput" class="form-control" id="FirstNameInput" aria-describedby="UserFirstname">
                     <small id="UserFirstname" class="form-text text-muted">We'll never share your information with anyone else.</small>
                 </div>
 
-                <div class="form-group">
-                    <label for="FirstNameInput">LAST NAME</label>
-                    <input type="text" class="form-control" id="LastnameInput" aria-describedby="UserLastname">
+                <div class="form-group" >
+                    <label for="LastNameInput">LAST NAME</label>
+                    <input type="text" name="LastNameInput" class="form-control" id="LastnameInput" aria-describedby="UserLastname">
                     <small id="UserLastname" class="form-text text-muted">We'll never share your information with anyone else.</small>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" >
                     <label for="AgeInput">AGE</label>
-                    <input type="number" class="form-control" id="AgeInput" aria-describedby="UserAge">
+                    <input type="number" name="AgeInput" class="form-control" id="AgeInput"  aria-describedby="UserAge">
                     <small id="UserAge" class="form-text text-muted">We'll never share your information with anyone else.</small>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" >
                     <label for="PhoneInput">PHONE NUMBER</label>
-                    <input type="text" class="form-control" id="PhoneInput" aria-describedby="UserPhone">
+                    <input type="tel" name="PhoneInput" class="form-control" id="PhoneInput" aria-describedby="UserPhone">
                     <small id="UserPhone" class="form-text text-muted">We'll never share your information with anyone else.</small>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" >
                     <label for="EmailInput">E_MAIL</label>
-                    <input type="text" class="form-control" id="EmailInput" aria-describedby="UserEmail">
+                    <input type="email" name="EmailInput" class="form-control" id="EmailInput" aria-describedby="UserEmail">
                     <small id="UserEmail" class="form-text text-muted">We'll never share your information with anyone else.</small>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group" align="right">
+                <button type="button" class="btn btn-info" id="save" onclick="addCustomer()" >ADD</button>
+                <button type="button" class="btn btn-warning" id="reset" onclick="reSet" >RESET</button>
+                </div>
 
             </form>
 
         </div>
     </div>
 </div>
+
+<div class="col-sm-8">
+    <div class="panel-body align-items-right">
+
+        <table id="tblCustomer" class="table table-bordered" cellpadding="0" cellspacing="0" width="100%">
+            <thead>
+
+            <tr>
+
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+            <tr></tr>
+
+            </tr>
+           </thead>
+        </table>
+
+    </div>
+</div>
+
+<script src="component/jquery/jquery.js" type="text/javascript"></script>
+<script src="component/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="component/jquery.validate.min.js" type="text/javascript"></script>
+
+<script>
+
+    var isNew = true;
+
+    function addCustomer()
+    {
+    if ($("#CustomerForm").valid())
+    {
+        var url="";
+        var data="";
+        var method;
+
+        if(isNew == true)
+        {
+            url = "add.jsp";
+            data = $("#CustomerForm").serialize();
+            method = 'POST'
+        }
+
+        $.ajax({
+            type: method,
+            url: url,
+            dataType: JSON,
+            data: data,
+
+            success:function (data) {
+
+            }
+
+        })
+    }
+    }
+
+</script>
+
 
 </body>
 </html>
