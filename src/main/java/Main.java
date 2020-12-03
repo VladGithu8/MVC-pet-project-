@@ -1,27 +1,15 @@
-import DAO.CustomerDaoImp;
-import DAO.OrderDaoImp;
-import DAO.ProductDaoImp;
 import IoC.config.MyConfig;
 import IoC.enums.DirectoryType;
 import IoC.models.Directory;
+import IoC.models.ServiceDetails;
 import IoC.services.ClassLocator;
 import IoC.services.ClassLocatorDirectory;
 import IoC.services.ClassLocatorJar;
 import IoC.services.DirectoryResolverImpl;
-import Models.Customer;
+import IoC.services.ScanningService;
+import IoC.services.ScanningServiceImpl;
 
-import Models.Order;
-import Models.Product;
-import Services.CustomerService;
-import Services.OrderService;
-import Services.ProductService;
-import Utils.HibernateSessionFactoryUtil;
-import org.hibernate.SessionFactory;
-
-import java.io.DataInput;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class Main {
@@ -29,12 +17,13 @@ public class Main {
     public static void main(String[] args) throws NullPointerException, SQLException {
         run(MyConfig.class);
     }
+
         public static void run(Class<?> startUpClass){
             run(startUpClass, new MyConfig());
         }
 
         public static void run(Class <?> startUpClass, MyConfig myConfig) {
-            System.out.println("Directory is: ");
+            ScanningService scanningService = new ScanningServiceImpl(myConfig.annotations());
             Directory directory = new DirectoryResolverImpl().resolveDirectory(startUpClass);
 
             ClassLocator classLocator = new ClassLocatorDirectory();
@@ -42,10 +31,16 @@ public class Main {
                 classLocator = new ClassLocatorJar();
             }
 
-            Set<Class<?>> classes = classLocator.locateClasses(directory.getDirectory());
-            System.out.println(classes);
+            Set<Class<?>> locateClasses;
+            locateClasses = classLocator.locateClasses(directory.getDirectory());
+            System.out.println(locateClasses);
 
             System.out.println(directory.getDirectoryType());
+
+            Set<ServiceDetails<?>> serviceDetails = scanningService.mapService(locateClasses);
+            System.out.println(serviceDetails);
+            System.out.println(scanningService);
+
     }
 
 //
