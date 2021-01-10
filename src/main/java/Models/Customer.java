@@ -47,6 +47,14 @@ public class Customer  {
     @Column(name="e_mail")
     private String email;
 
+    public Customer(String firstName, String lastName, int age, String phone, String email){
+        this.age = age;
+        this.firstName = firstName;
+        this.email = email;
+        this.lastName = lastName;
+        this.phone = phone;
+    }
+
     public Customer(int id, String firstName, String lastName, int age, String phone, String email, List<Order> orderList){
         this.id = id;
         this.age = age;

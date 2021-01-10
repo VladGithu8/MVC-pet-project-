@@ -1,7 +1,6 @@
 package Services;
 
 import DAO.AbstractDao;
-
 import org.hibernate.HibernateException;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,7 +35,6 @@ public abstract class AbstractService<K,T extends AbstractDao<K>> implements Ser
         return entity.update(k);
     }
 
-    @Override
     public Optional<K> delete(K k) throws SQLException {
         return entity.delete(k);
     }
